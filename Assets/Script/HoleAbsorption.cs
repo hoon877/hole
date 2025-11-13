@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,29 +6,36 @@ using UnityEngine;
 public class HoleAbsorption : MonoBehaviour
 {
     public float absorbSpeed = 0.5f;
-    //¿Ã∫•∆Æ «ÓµÈ∑Ø
+    //Ïù¥Î≤§Ìä∏ Ìó®Îì§Îü¨
     public event Action<int> OnAbsorb;
-
+    Collider ground;
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Object"))
         {
             other.attachedRigidbody.useGravity = true;
-            //// √µ√µ»˜ ∫Ì∑¢»¶ ¡ﬂΩ…¿∏∑Œ ¿Ãµø
+            ground.isTrigger = true;
+            //// Ï≤úÏ≤úÌûà Î∏îÎûôÌôÄ Ï§ëÏã¨ÏúºÎ°ú Ïù¥Îèô
             //Vector3 dir = (transform.position - other.transform.position).normalized;
             //other.transform.position += dir * absorbSpeed * Time.deltaTime;
             //other.transform.position += Vector3.down * absorbSpeed * Time.deltaTime;
-            
-            //float holeY = transform.position.y;
-            //float objectY = other.transform.position.y;
 
-            //// √Ê∫–»˜ ∞°±Óøˆ¡ˆ∏È »Ìºˆ √≥∏Æ
+            float holeY = transform.position.y;
+            float objectY = other.transform.position.y;
+
+            Debug.Log("Hole Y: " + holeY + ", Object Y: " + objectY);
+            //// Ï∂©Î∂ÑÌûà Í∞ÄÍπåÏõåÏßÄÎ©¥ Ìù°Ïàò Ï≤òÎ¶¨
             //if (Mathf.Abs(holeY-objectY)>0.05)
             //{
             //    other.gameObject.SetActive(false);
-            //    // ¿Ã∫•∆Æ πﬂª˝
+            //    // Ïù¥Î≤§Ìä∏ Î∞úÏÉù
             //    OnAbsorb?.Invoke(1);
             //}
+        }
+        if(other.CompareTag("Ground"))
+        {
+            //other.attachedRigidbody.useGravity = false;
+            ground = other;
         }
     }
 
@@ -36,9 +43,10 @@ public class HoleAbsorption : MonoBehaviour
     {
         if (other.CompareTag("Object"))
         {
-            other.attachedRigidbody.useGravity = false;
+            ground.isTrigger = false;
+            //other.attachedRigidbody.useGravity = false;
             //other.gameObject.SetActive(false);
-            //// ¿Ã∫•∆Æ πﬂª˝
+            //// Ïù¥Î≤§Ìä∏ Î∞úÏÉù
             //OnAbsorb?.Invoke(1);
         }
     }
